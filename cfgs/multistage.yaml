@@ -1,0 +1,24 @@
+MODEL:
+  ADAPTATION: tent
+  ARCH: RN18
+DATA_DIR:
+  "/gallery_tate/wonjae.roh"
+TEST:
+  BATCH_SIZE: 200
+CORRUPTION:
+  DATASET: cifar10
+  SEVERITY:
+    - 5
+  TYPE:
+    - gaussian_noise
+OPTIM:
+  METHOD: Adam
+  STEPS: 1
+  BETA: 0.9
+  LR: 1e-3
+  WD: 0.
+ITERATION: 1
+EPOCH: 50
+
+# Hendrycks2020AugMix_WRN
+# RN18

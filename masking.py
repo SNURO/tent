@@ -3,7 +3,7 @@ import logging
 import torch
 import torch.optim as optim
 
-from robustbench.data import load_cifar10c
+from robustbench.data import load_cifar10c, load_cifar10
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.utils import load_model
 
@@ -18,6 +18,7 @@ import ipdb
 from conf import cfg, load_cfg_fom_args
 
 
+# 보류하고 bufr 로 넘어감
 logger = logging.getLogger(__name__)
 
 
@@ -29,15 +30,7 @@ def evaluate(description):
     if cfg.MODEL.ADAPTATION == "source":
         logger.info("test-time adaptation: NONE")
         model = setup_source(base_model)
-    if cfg.MODEL.ADAPTATION == "norm":
-        logger.info("test-time adaptation: NORM")
-        model = setup_norm(base_model)
-    if cfg.MODEL.ADAPTATION == "tent":
-        logger.info("test-time adaptation: TENT")
-        model = setup_tent(base_model)
-    if cfg.MODEL.ADAPTATION == "oracle" or cfg.MODEL.ADAPTATION == "oracle_split":
-        logger.info("test-time adaptation: ORACLE")
-        model = setup_oracle(base_model)
+
     # evaluate on each severity and type of corruption in turn
     for severity in cfg.CORRUPTION.SEVERITY:
         for corruption_type in cfg.CORRUPTION.TYPE:
@@ -49,6 +42,9 @@ def evaluate(description):
             except:
                 logger.warning("not resetting model")
             #ipdb.set_trace()
+            
+            #TODO: load original cifar10 for histogram
+            
             x_test, y_test = load_cifar10c(cfg.CORRUPTION.NUM_EX,
                                            severity, cfg.DATA_DIR, False,
                                            [corruption_type])
@@ -57,13 +53,8 @@ def evaluate(description):
             check_freeze(model.model)
             #disable_batchnorm(model)
             start = time.time()
-            if cfg.MODEL.ADAPTATION == "oracle":
-                acc = oracle_accuracy_multi(model, x_test, y_test, cfg.TEST.BATCH_SIZE, epochs=100)
-            elif cfg.MODEL.ADAPTATION == 'oracle_split':
-                x_train, y_train, x_test, y_test = split_train_val(x_test, y_test)
-                acc = oracle_accuracy_split(model, x_train, y_train, x_test, y_test, cfg.TEST.BATCH_SIZE, epochs=50)
-            else:
-                acc = clean_accuracy(model, x_test, y_test, cfg.TEST.BATCH_SIZE, iteration=cfg.ITERATION)
+
+            acc = clean_accuracy(model, x_test, y_test, cfg.TEST.BATCH_SIZE, iteration=cfg.ITERATION)
             end = time.time()
             err = 1. - acc
             logger.info(f"error % [{corruption_type}{severity}]: {err:.2%}      {end - start:.0f}s")
@@ -76,52 +67,6 @@ def setup_source(model):
     model.eval()
     logger.info(f"model for evaluation: %s", model)
     return model
-
-def setup_oracle(model):
-    """oracle, all params updatable."""
-    #TODO not sure it is correct to make it in train mode
-    model.train()
-    model.requires_grad_(True)
-    optimizer = setup_optimizer(model.parameters())
-    oracle_model = oracle.Oracle(model, optimizer,
-                           steps=cfg.OPTIM.STEPS,
-                           episodic=cfg.MODEL.EPISODIC)
-    logger.info(f"model for adaptation: %s", model)
-    logger.info(f"optimizer for adaptation: %s", optimizer)
-    return oracle_model
-
-
-def setup_norm(model):
-    """Set up test-time normalization adaptation.
-
-    Adapt by normalizing features with test batch statistics.
-    The statistics are measured independently for each batch;
-    no running average or other cross-batch estimation is used.
-    """
-    norm_model = norm.Norm(model)
-    logger.info(f"model for adaptation: %s", model)
-    stats, stat_names = norm.collect_stats(model)
-    logger.info(f"stats for adaptation: %s", stat_names)
-    return norm_model
-
-
-def setup_tent(model):
-    """Set up tent adaptation.
-
-    Configure the model for training + feature modulation by batch statistics,
-    collect the parameters for feature modulation by gradient optimization,
-    set up the optimizer, and then tent the model.
-    """
-    model = tent.configure_model(model)
-    params, param_names = tent.collect_params(model)
-    optimizer = setup_optimizer(params)
-    tent_model = tent.Tent(model, optimizer,
-                           steps=cfg.OPTIM.STEPS,
-                           episodic=cfg.MODEL.EPISODIC)
-    logger.info(f"model for adaptation: %s", model)
-    logger.info(f"params for adaptation: %s", param_names)
-    logger.info(f"optimizer for adaptation: %s", optimizer)
-    return tent_model
 
 
 def setup_optimizer(params):

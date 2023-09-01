@@ -1,18 +1,15 @@
 MODEL:
   ADAPTATION: tent
-  ARCH: Standard
+  ARCH: Hendrycks2020AugMix_WRN
+DATA_DIR:
+  "/gallery_tate/wonjae.roh"
 TEST:
   BATCH_SIZE: 200
 CORRUPTION:
   DATASET: cifar10
   SEVERITY:
     - 5
-    - 4
-    - 3
-    - 2
-    - 1
   TYPE:
-    - gaussian_noise
     - shot_noise
     - impulse_noise
     - defocus_blur
@@ -33,3 +30,7 @@ OPTIM:
   BETA: 0.9
   LR: 1e-3
   WD: 0.
+EXPERIMENTAL:
+  LINEAR_RETRAIN: False
+ITERATION: 1
+EPOCH: 50

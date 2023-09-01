@@ -35,7 +35,7 @@ def evaluate(description):
     if cfg.MODEL.ADAPTATION == "tent":
         logger.info("test-time adaptation: TENT")
         model = setup_tent(base_model)
-    if cfg.MODEL.ADAPTATION == "oracle" or cfg.MODEL.ADAPTATION == "oracle_split":
+    if cfg.MODEL.ADAPTATION == "oracle":
         logger.info("test-time adaptation: ORACLE")
         model = setup_oracle(base_model)
     # evaluate on each severity and type of corruption in turn
@@ -48,27 +48,47 @@ def evaluate(description):
                 logger.info("resetting model")
             except:
                 logger.warning("not resetting model")
-            #ipdb.set_trace()
+            #TENT default optimizer는 last FC layer 을 parameter로 가지고 있지 않음
+            if cfg.EXPERIMENTAL.LINEAR_RETRAIN and cfg.MODEL.ADAPTATION == "tent":
+                params, param_names = tent.collect_params(model)
+                model.optimizer = setup_optimizer(params)
+            model.optimizer.param_groups[0]['lr'] = cfg.OPTIM.LR
+
             x_test, y_test = load_cifar10c(cfg.CORRUPTION.NUM_EX,
                                            severity, cfg.DATA_DIR, False,
                                            [corruption_type])
             x_test, y_test = x_test.cuda(), y_test.cuda()
-            #load_fc_params(model, 'no_bias_iter100')
-            check_freeze(model.model)
-            #disable_batchnorm(model)
+            if cfg.EXPERIMENTAL.LINEAR_RETRAIN and cfg.MODEL.ADAPTATION == "oracle":
+                logger.info("linear_finetune activated")
+                tent.linear_retrain(model.model, freeze_bias=False)
+
+            #check_freeze(model.model)
+            
             start = time.time()
             if cfg.MODEL.ADAPTATION == "oracle":
-                acc = oracle_accuracy_multi(model, x_test, y_test, cfg.TEST.BATCH_SIZE, epochs=100)
-            elif cfg.MODEL.ADAPTATION == 'oracle_split':
-                x_train, y_train, x_test, y_test = split_train_val(x_test, y_test)
-                acc = oracle_accuracy_split(model, x_train, y_train, x_test, y_test, cfg.TEST.BATCH_SIZE, epochs=50)
+                #acc = oracle_accuracy_multi(model, x_test, y_test, cfg.TEST.BATCH_SIZE, epochs=50, linear_retrain=True)
+                acc = oracle_accuracy(model, x_test, y_test, cfg.TEST.BATCH_SIZE, iteration=10, linear_retrain=True)
             else:
                 acc = clean_accuracy(model, x_test, y_test, cfg.TEST.BATCH_SIZE, iteration=cfg.ITERATION)
+
+            #ipdb.set_trace()
             end = time.time()
             err = 1. - acc
             logger.info(f"error % [{corruption_type}{severity}]: {err:.2%}      {end - start:.0f}s")
 
-        #save_fc_params(model, 'source')
+            if cfg.EXPERIMENTAL.LINEAR_RETRAIN and cfg.MODEL.ADAPTATION == "tent":
+                logger.info("TENT linear_finetune activated")
+                #TENT default optimizer는 last FC layer 을 parameter로 가지고 있지 않음. optimizer 변경하지 않으면 update 안됨
+                tent.linear_retrain(model.model)
+                model.optimizer=setup_optimizer(model.model.parameters())
+                acc = oracle_accuracy_multi(model, x_test, y_test, cfg.TEST.BATCH_SIZE, epochs=50, linear_retrain = True)
+                # linear_retrain only true when retraining on TENT, because forward is defined in confusing way
+            
+                end_finetune = time.time()
+                err = 1. - acc
+                logger.info(f"error % [{corruption_type}{severity}]_finetune: {err:.2%}      {end_finetune - end:.0f}s")
+
+            #save_fc_params(model, 'freeze_bias_iter100')
 
 
 def setup_source(model):
@@ -78,8 +98,7 @@ def setup_source(model):
     return model
 
 def setup_oracle(model):
-    """oracle, all params updatable."""
-    #TODO not sure it is correct to make it in train mode
+    """Set up the baseline source model without adaptation."""
     model.train()
     model.requires_grad_(True)
     optimizer = setup_optimizer(model.parameters())

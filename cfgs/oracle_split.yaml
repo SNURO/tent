@@ -1,5 +1,5 @@
 MODEL:
-  ADAPTATION: norm
+  ADAPTATION: oracle_split
   ARCH: Hendrycks2020AugMix_WRN
 DATA_DIR:
   "/gallery_tate/wonjae.roh"
@@ -9,10 +9,6 @@ CORRUPTION:
   DATASET: cifar10
   SEVERITY:
     - 5
-    - 4
-    - 3
-    - 2
-    - 1
   TYPE:
     - gaussian_noise
     - shot_noise
@@ -29,3 +25,13 @@ CORRUPTION:
     - elastic_transform
     - pixelate
     - jpeg_compression
+OPTIM:
+  METHOD: Adam
+  STEPS: 1
+  BETA: 0.9
+  LR: 0.0001
+  WD: 0.9
+EXPERIMENTAL:
+  LINEAR_RETRAIN: True
+ITERATION: 1
+EPOCH: 50

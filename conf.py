@@ -91,6 +91,10 @@ _C.OPTIM.NESTEROV = True
 _C.OPTIM.WD = 0.0
 
 # ------------------------------- Testing options --------------------------- #
+_C.ITERATION = 1
+
+_C.EPOCH = 1
+
 _C.TEST = CfgNode()
 
 # Batch size for evaluation (and updates for norm + tent)
@@ -127,6 +131,12 @@ _C.LOG_TIME = ''
 
 # # Config destination (in SAVE_DIR)
 # _C.CFG_DEST = "cfg.yaml"
+
+# ---------------------------------- Experimental --------------------------- #
+
+# Optional description of a config
+_C.EXPERIMENTAL = CfgNode()
+_C.EXPERIMENTAL.LINEAR_RETRAIN = False
 
 # --------------------------------- Default config -------------------------- #
 _CFG_DEFAULT = _C.clone()

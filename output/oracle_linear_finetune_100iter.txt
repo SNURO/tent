@@ -1,0 +1,255 @@
+[23/06/24 20:45:05] [conf.py:  216]: PyTorch Version: torch=1.8.1+cu102, cuda=10.2, cudnn=7605
+[23/06/24 20:45:05] [conf.py:  218]: BN:
+  EPS: 1e-05
+  MOM: 0.1
+CKPT_DIR: ./ckpt
+CORRUPTION:
+  DATASET: cifar10
+  NUM_EX: 10000
+  SEVERITY: [5]
+  TYPE: ['impulse_noise', 'defocus_blur', 'glass_blur', 'motion_blur', 'zoom_blur', 'snow', 'frost', 'fog', 'brightness', 'contrast', 'elastic_transform', 'pixelate', 'jpeg_compression']
+CUDNN:
+  BENCHMARK: True
+DATA_DIR: /gallery_tate/wonjae.roh
+DESC: 
+EXPERIMENTAL:
+  LINEAR_RETRAIN: True
+ITERATION: 100
+LOG_DEST: oracle_230624_204505.txt
+LOG_TIME: 230624_204505
+MODEL:
+  ADAPTATION: oracle
+  ARCH: Hendrycks2020AugMix_WRN
+  EPISODIC: False
+OPTIM:
+  BETA: 0.9
+  DAMPENING: 0.0
+  LR: 0.01
+  METHOD: Adam
+  MOMENTUM: 0.9
+  NESTEROV: True
+  STEPS: 1
+  WD: 0.0
+RNG_SEED: 1
+SAVE_DIR: ./output
+TEST:
+  BATCH_SIZE: 200
+[23/06/24 20:45:09] [experiment_linear_retrain.py:   39]: test-time adaptation: ORACLE
+[23/06/24 20:45:10] [experiment_linear_retrain.py:   93]: model for adaptation: Hendrycks2020AugMixWRNNet(
+  (conv1): Conv2d(3, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+  (block1): NetworkBlock(
+    (layer): Sequential(
+      (0): BasicBlock(
+        (bn1): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(16, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (convShortcut): Conv2d(16, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+      (1): BasicBlock(
+        (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (2): BasicBlock(
+        (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (3): BasicBlock(
+        (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (4): BasicBlock(
+        (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (5): BasicBlock(
+        (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+    )
+  )
+  (block2): NetworkBlock(
+    (layer): Sequential(
+      (0): BasicBlock(
+        (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(32, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (convShortcut): Conv2d(32, 64, kernel_size=(1, 1), stride=(2, 2), bias=False)
+      )
+      (1): BasicBlock(
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (2): BasicBlock(
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (3): BasicBlock(
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (4): BasicBlock(
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (5): BasicBlock(
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+    )
+  )
+  (block3): NetworkBlock(
+    (layer): Sequential(
+      (0): BasicBlock(
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (convShortcut): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+      )
+      (1): BasicBlock(
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (2): BasicBlock(
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (3): BasicBlock(
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (4): BasicBlock(
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+      (5): BasicBlock(
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu1): ReLU(inplace=True)
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu2): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+    )
+  )
+  (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(inplace=True)
+  (fc): Linear(in_features=128, out_features=10, bias=True)
+)
+[23/06/24 20:45:10] [experiment_linear_retrain.py:   94]: optimizer for adaptation: Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.01
+    weight_decay: 0.0
+)
+[23/06/24 19:54:09] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 19:54:09] [experiment_linear_retrain.py:   57]: linear_finetune activated
+[23/06/24 20:06:49] [experiment_linear_retrain.py:   71]: error % [gaussian_noise5]: 6.39%      760s
+[23/06/24 20:06:49] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 20:06:49] [experiment_linear_retrain.py:   57]: linear_finetune activated
+[23/06/24 20:19:29] [experiment_linear_retrain.py:   71]: error % [shot_noise5]: 5.09%      760s
+[23/06/24 20:45:10] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 20:45:10] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 20:56:37] [experiment_linear_retrain.py:   76]: error % [impulse_noise5]: 8.71%      687s
+[23/06/24 20:56:37] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 20:56:38] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 21:08:05] [experiment_linear_retrain.py:   76]: error % [defocus_blur5]: 1.41%      687s
+[23/06/24 21:08:05] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 21:08:05] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 21:19:32] [experiment_linear_retrain.py:   76]: error % [glass_blur5]: 8.20%      687s
+[23/06/24 21:19:33] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 21:19:33] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 21:31:00] [experiment_linear_retrain.py:   76]: error % [motion_blur5]: 1.99%      687s
+[23/06/24 21:31:00] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 21:31:01] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 21:42:28] [experiment_linear_retrain.py:   76]: error % [zoom_blur5]: 1.46%      687s
+[23/06/24 21:42:28] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 21:42:28] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 21:53:56] [experiment_linear_retrain.py:   76]: error % [snow5]: 2.55%      687s
+[23/06/24 21:53:56] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 21:53:56] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 22:05:23] [experiment_linear_retrain.py:   76]: error % [frost5]: 3.32%      687s
+[23/06/24 22:05:23] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 22:05:23] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 22:16:51] [experiment_linear_retrain.py:   76]: error % [fog5]: 4.15%      687s
+[23/06/24 22:16:51] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 22:16:51] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 22:28:18] [experiment_linear_retrain.py:   76]: error % [brightness5]: 0.79%      687s
+[23/06/24 22:28:18] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 22:28:19] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 22:39:46] [experiment_linear_retrain.py:   76]: error % [contrast5]: 3.20%      687s
+[23/06/24 22:39:46] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 22:39:46] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 22:51:14] [experiment_linear_retrain.py:   76]: error % [elastic_transform5]: 4.91%      687s
+[23/06/24 22:51:14] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 22:51:14] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 23:02:41] [experiment_linear_retrain.py:   76]: error % [pixelate5]: 3.73%      687s
+[23/06/24 23:02:41] [experiment_linear_retrain.py:   48]: resetting model
+[23/06/24 23:02:42] [experiment_linear_retrain.py:   59]: linear_finetune activated
+[23/06/24 23:14:09] [experiment_linear_retrain.py:   76]: error % [jpeg_compression5]: 5.52%      687s
